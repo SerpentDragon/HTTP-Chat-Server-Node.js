@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>Join</title>
+        </head>
+        <body>
+		<h1>Join our Chat!</h1>
+		<form id="signup-form">
+			<label id="nickname-label">Enter nickname:</label>
+			<input id="nickname-input" type="text" name="nickname" required>
+			<button type="submit" value="Join">Join</button>
+		</form>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var socket = io.connect();
+
+			var form = document.getElementById("signup-form");
+			var nicknameInput = document.getElementById("nickname-input");
+
+			form.addEventListener("submit", (event) => {	
+				socket.emit("validate nickname", nicknameInput.value);
+			});
+
+			socket.on("wrong nickname", () => {
+				alert("This nickname is laready taken! Choose a new one!");
+				window.location.reload();
+				nicknameInput.value = "";
+			});
+		</script>
+        </body>
+</html>
